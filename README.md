@@ -1,7 +1,7 @@
 # py-activerecord
 py-activerecord is python activerecord library that can 
 
-### features
+## features
 - activerecord like mysql wrapper
 - ORM
 
@@ -11,7 +11,7 @@ py-activerecord is python activerecord library that can
 
 ## functions
 ### class functions
-query
+- query
 ```
 data = SampleModel.query()
 print(len(data))
@@ -25,7 +25,7 @@ data = SampleModel.query(where=["title='py-activerecord'", "text like '%Python%'
 data = SampleModel.query(order=["id asc", "title desc"])
 ```
 ### instance functions
-save
+- save
 ```
 model = SampleModel()
 model.number = 1
@@ -35,7 +35,7 @@ model.date = "2016-01-01 00:00:00"
 
 model.save()
 ```
-delete
+- delete
 ```
 obj = SampleModel.query(where=["title='py-activerecord'"], order=["id asc"]).first()
 obj.delete()
