@@ -1,4 +1,9 @@
 # py-activerecord
+py-activerecord is python activerecord library that can 
+
+### features
+- activerecord like mysql wrapper
+- ORM
 
 ## requirements
 - Python 3.x
@@ -28,7 +33,7 @@ model.title = "py-activerecord"
 model.text = "ActiveRecord for Python Library"
 model.date = "2016-01-01 00:00:00"
 
-model.save() # save to databese!
+model.save()
 ```
 delete
 ```
