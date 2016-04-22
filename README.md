@@ -1,21 +1,21 @@
 # py-activerecord
 
-### requirements
+## requirements
 - Python 3.x
 - mysql.connector
 
-### functions
-#### class functions
+## functions
+### class functions
 - create()
 - remove()
 - query()
 
-#### instance functions
+### instance functions
 - save()
 - delete()
 
-### tutorial
-1. create model class
+## tutorial
+1 create model class
 ```
 import model
 from column import Column as Column
@@ -29,7 +29,7 @@ class SampleModel(model.Model):
     date = Column(type="timestamp")
 ```
 
-2. add setting.json file
+2 add setting.json file
 ex.
 ```
 {
