@@ -67,3 +67,5 @@ ex.
 }
 ```
 value of "database" must be lower-case of the model class name.
+
+3 Let's try py-activerecord!!
