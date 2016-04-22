@@ -6,13 +6,35 @@
 
 ## functions
 ### class functions
-- create()
-- remove()
-- query()
+query
+```
+data = SampleModel.query()
+print(len(data))
+for d in data:
+    print(d.title)
 
+# where
+data = SampleModel.query(where=["title='py-activerecord'", "text like '%Python%'"])
+
+# order
+data = SampleModel.query(order=["id asc", "title desc"])
+```
 ### instance functions
-- save()
-- delete()
+save
+```
+model = SampleModel()
+model.number = 1
+model.title = "py-activerecord"
+model.text = "ActiveRecord for Python Library"
+model.date = "2016-01-01 00:00:00"
+
+model.save() # save to databese!
+```
+delete
+```
+obj = SampleModel.query(where=["title='py-activerecord'"], order=["id asc"]).first()
+obj.delete()
+```
 
 ## tutorial
 1 create model class
@@ -23,9 +45,9 @@ from column import Column as Column
 
 class SampleModel(model.Model):
 
-    title = Column(type="varchar")
-    context = Column(type="text")
     number = Column(type="int")
+    title = Column(type="varchar")
+    text = Column(type="text")
     date = Column(type="timestamp")
 ```
 
@@ -39,4 +61,4 @@ ex.
   "password": ""
 }
 ```
-value of "database" must be snake-case of the model class name.
+value of "database" must be lower-case of the model class name.
