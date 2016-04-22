@@ -42,7 +42,7 @@ obj.delete()
 ```
 
 ## tutorial
-1. create model class
+create model class
 ```
 import model
 from column import Column as Column
@@ -56,7 +56,7 @@ class SampleModel(model.Model):
     date = Column(type="timestamp")
 ```
 
-2. add setting.json file
+add setting.json file
 ```
 {
   "host": "localhost",
@@ -66,4 +66,4 @@ class SampleModel(model.Model):
 }
 ```
 
-3. Let's try py-activerecord!!
+Let's try py-activerecord!!
