@@ -1,5 +1,5 @@
 # py-activerecord
-py-activerecord is python activerecord library.
+py-activerecord is python activerecord like mysql wrapper.
 
 ## features
 - activerecord like mysql wrapper
