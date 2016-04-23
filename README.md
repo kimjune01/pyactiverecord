@@ -7,7 +7,8 @@ py-activerecord is python activerecord like mysql wrapper.
 
 ## requirements
 - Python 3.x
-- mysql.connector
+- mysql
+- mysql-connector-python
 
 ## method
 ### class method
