@@ -9,7 +9,7 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(
-    name='py-ativerecord',
+    name='py-activerecord',
     version=version,
     description="py-activerecord is python activerecord like mysql wrapper.",
     classifiers=[
