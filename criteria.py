@@ -1,6 +1,6 @@
 import copy
 
-from model.database import Database as Database
+from database import Database as Database
 
 class Criteria(object):
     def __init__(self, klass):

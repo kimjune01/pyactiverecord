@@ -1,5 +1,6 @@
-from model.database import Database as Database
 from model.locator import Locator as Locator
+
+from database import Database as Database
 
 
 class Model:
@@ -94,6 +95,6 @@ class Model:
 
 
 class Column:
-    def __init__(self, type="", length=255):
+    def __init__(self, type, length=255):
         self.type = type
         self.length = length
