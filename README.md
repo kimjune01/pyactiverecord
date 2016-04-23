@@ -7,10 +7,11 @@ py-activerecord is python activerecord like mysql wrapper.
 
 ## requirements
 - Python 3.x
-- mysql.connector
+- mysql
+- mysql-connector-python
 
-## functions
-### class functions
+## method
+### class method
 - query
 ```
 data = SampleModel.query()
@@ -24,7 +25,7 @@ data = SampleModel.query(where=["title='py-activerecord'", "text like '%Python%'
 # order
 data = SampleModel.query(order=["id asc", "title desc"])
 ```
-### instance functions
+### instance method
 - save
 ```
 model = SampleModel()
@@ -60,7 +61,7 @@ add setting.json file
 ```
 {
   "host": "localhost",
-  "database": "sample_model",
+  "database": "database_name",
   "user": "root",
   "password": ""
 }
