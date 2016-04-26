@@ -1,4 +1,4 @@
-# py-activerecord
+# pyactiverecord
 py-activerecord is python activerecord like mysql wrapper.
 
 ## features
@@ -9,6 +9,30 @@ py-activerecord is python activerecord like mysql wrapper.
 - Python 3.x
 - mysql
 - mysql-connector-python
+
+## Usage
+create model class
+```
+import pyactiverecord.model as model
+from pyactiverecord.database import Database as Database
+
+
+class SampleModel(model.Model):
+
+    number = Column(type="int")
+    title = Column(type="varchar")
+    text = Column(type="text")
+    date = Column(type="timestamp")
+```
+connect to database
+```
+Database.connect(
+    host="localhost",
+    database="database_name",
+    user="root",
+    password=""
+)
+```
 
 ## method
 ### class method
@@ -41,30 +65,3 @@ model.save()
 obj = SampleModel.query(where=["title='py-activerecord'"], order=["id asc"]).first()
 obj.delete()
 ```
-
-## tutorial
-create model class
-```
-import model
-from column import Column as Column
-
-
-class SampleModel(model.Model):
-
-    number = Column(type="int")
-    title = Column(type="varchar")
-    text = Column(type="text")
-    date = Column(type="timestamp")
-```
-
-add setting.json file
-```
-{
-  "host": "localhost",
-  "database": "database_name",
-  "user": "root",
-  "password": ""
-}
-```
-
-Let's try py-activerecord!!
