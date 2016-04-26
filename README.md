@@ -14,7 +14,6 @@ pyactiverecord is python active-record like mysql wrapper.
 create model class
 ```
 import pyactiverecord.model as model
-from pyactiverecord.database import Database as Database
 
 
 class SampleModel(model.Model):
@@ -27,6 +26,8 @@ class SampleModel(model.Model):
 ```
 connect to database
 ```
+from pyactiverecord.database import Database as Database
+
 Database.connect(
     host="localhost",
     database="database_name",
