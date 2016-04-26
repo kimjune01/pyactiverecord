@@ -9,9 +9,9 @@ except ImportError:
     read_md = lambda f: open(f, 'r').read()
 
 setup(
-    name='py-activerecord',
+    name='pyactiverecord',
     version=version,
-    description="py-activerecord is python activerecord like mysql wrapper.",
+    description="pyactiverecord is python active record like mysql wrapper.",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
@@ -24,10 +24,10 @@ setup(
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
     ],
-    keywords='db, mysql, activerecord, ORM',
+    keywords='db, mysql, active record, ORM',
     author="Hiroyuki Nikaido",
     author_email="hiroyuki.nikaido@gmail.com",
-    url='https://github.com/nkdn/py-activerecord',
+    url='https://github.com/nkdn/pyactiverecord',
     license='MIT',
     packages=find_packages(exclude=['examples', 'tests']),
     include_package_data=True,

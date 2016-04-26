@@ -2,8 +2,7 @@
 __pycache__
 __init__.py
 config.json
-demo
 build/
 dist/
-py_activerecord.egg-info/
+pyactiverecord.egg-info/
 
