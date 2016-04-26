@@ -1,7 +1,6 @@
+from model.database import Database as Database
 from model.locator import Locator as Locator
-
-from database import Database as Database
-
+from model.column import Column as Column
 
 class Model:
     id = Column(type="int")
@@ -27,6 +26,11 @@ class Model:
     def all(cls):
         criteria = Locator.query(cls)
         return criteria.all()
+
+    @classmethod
+    def size(cls):
+        criteria = Locator.query(cls)
+        return criteria.size()
 
     @classmethod
     def create(cls):
@@ -62,7 +66,6 @@ class Model:
                         else:
                             sql += "\"\","
                 sql = sql[0:-1] + ")"
-                print(sql)
                 cursor.execute(sql)
                 connector.commit()
                 pass
@@ -81,7 +84,7 @@ class Model:
             cursor = connector.cursor()
             try:
                 sql = "delete from " + self.__class__.__name__.lower() + " where id = " + str(getattr(self, "id")) + ";"
-                print(sql)
+
                 cursor.execute(sql)
                 connector.commit()
                 pass
@@ -92,9 +95,3 @@ class Model:
                 cursor.close()
         finally:
             connector.close()
-
-
-class Column:
-    def __init__(self, type, length=255):
-        self.type = type
-        self.length = length

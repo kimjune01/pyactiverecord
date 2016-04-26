@@ -1,6 +1,8 @@
 import copy
 
-from database import Database as Database
+from model.database import Database as Database
+from model.column import Column as Column
+
 
 class Criteria(object):
     def __init__(self, klass):
@@ -31,6 +33,7 @@ class Criteria(object):
             try:
                 sql = "DROP TABLE IF EXISTS `" + self._klass.__name__.lower() + "`;\n"
                 cursor.execute(sql)
+
                 sql = "create table `" + self._klass.__name__.lower() + "` (\n"
                 sql += "    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n"
                 for k, v in self._klass.__dict__.items():
@@ -40,16 +43,16 @@ class Criteria(object):
                         elif v.type == "text":
                             sql += "    `" + k + "` text,\n"
                         elif v.type == "varchar":
-                            sql += "    `" + k + "` varchar(" + v.length + ") DEFAULT NULL,\n"
+                            sql += "    `" + k + "` varchar(" + str(v.length) + ") DEFAULT NULL,\n"
                         elif v.type == "timestamp":
                             sql += "    `" + k + "` timestamp NULL DEFAULT NULL,\n"
                         else:
                             print("error: invalid field type `" + v.type + "`")
                 sql += "    PRIMARY KEY (`id`)\n"
                 sql += ") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n"
-                sql += "\n"
-                sql += "LOCK TABLES `" + self._klass.__name__.lower() + "` WRITE;"
-                print(sql)
+                cursor.execute(sql)
+
+                sql = "LOCK TABLES `" + self._klass.__name__.lower() + "` WRITE;"
                 cursor.execute(sql)
             finally:
                 cursor.close()
@@ -79,7 +82,6 @@ class Criteria(object):
                         sql += " " + v
 
                 sql += ";"
-                print(sql)
                 cursor.execute(sql)
                 ret = [dict(line) for line in [zip([column[0] for column in
                                                     cursor.description], row) for row in cursor.fetchall()]]
@@ -89,7 +91,7 @@ class Criteria(object):
         finally:
             connector.close()
 
-        self._lst = self.recursive(ret)
+        self._lst = self.recursive(ret, self._lst)
         return self
 
     def recursive(self, ret=[], lst=[]):
@@ -98,10 +100,10 @@ class Criteria(object):
         else:
             r = ret.pop()
             c = self._klass()
-            for k, v in r.items():
-                column = copy.copy(getattr(c, k))
-                column = v
-                setattr(c, k, column)
+            for k, v in c.__class__.__dict__.items():
+                if v.__class__ is not Column:
+                    continue
+                setattr(c, k, r[k])
             lst.append(c)
             return self.recursive(ret, lst)
 
@@ -113,6 +115,9 @@ class Criteria(object):
 
     def first(self):
         return self._lst[0] if len(self._lst) > 0 else None
+
+    def size(self):
+        return len(self._lst)
 
     def is_exist_table(self):
         flag = True

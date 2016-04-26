@@ -1,4 +1,4 @@
-from criteria import Criteria as Criteria
+from model.criteria import Criteria as Criteria
 
 
 class Locator:
