@@ -1,8 +1,8 @@
 # pyactiverecord
-py-activerecord is python activerecord like mysql wrapper.
+pyactiverecord is python active-record like mysql wrapper.
 
 ## features
-- activerecord like mysql wrapper
+- active-record like mysql wrapper
 - ORM
 
 ## requirements
@@ -23,6 +23,7 @@ class SampleModel(model.Model):
     title = Column(type="varchar")
     text = Column(type="text")
     date = Column(type="timestamp")
+    
 ```
 connect to database
 ```
