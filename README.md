@@ -13,22 +13,22 @@ pyactiverecord is python active-record like mysql wrapper.
 ## Usage
 create model class
 ```
-import pyactiverecord.model as model
+import model
 
 
 class SampleModel(model.Model):
 
-    number = Column(type="int")
-    title = Column(type="varchar")
-    text = Column(type="text")
-    date = Column(type="timestamp")
+    number = model.Column(type="int")
+    title = model.Column(type="varchar")
+    text = model.Column(type="text")
+    date = model.Column(type="timestamp")
     
 ```
 connect to database
 ```
-from pyactiverecord.database import Database as Database
+import model
 
-Database.connect(
+model.Database.setup(
     host="localhost",
     database="database_name",
     user="root",
@@ -54,18 +54,18 @@ data = SampleModel.query(order=["id asc", "title desc"])
 ### instance methods
 - save
 ```
-model = SampleModel()
-model.number = 1
-model.title = "py-activerecord"
-model.text = "ActiveRecord for Python Library"
-model.date = "2016-01-01 00:00:00"
+s = SampleModel()
+s.number = 1
+s.title = "py-activerecord"
+s.text = "ActiveRecord for Python Library"
+s.date = "2016-01-01 00:00:00"
 
-model.save()
+s.save()
 ```
 - delete
 ```
-obj = SampleModel.query(where=["title='py-activerecord'"], order=["id asc"]).first()
-obj.delete()
+s = SampleModel.query(where=["title='py-activerecord'"], order=["id asc"]).first()
+s.delete()
 ```
 
 ### License
