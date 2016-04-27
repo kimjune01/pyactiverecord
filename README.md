@@ -1,11 +1,11 @@
 # pyactiverecord
 pyactiverecord is python active-record like mysql wrapper.
 
-## features
+## Features
 - active-record like mysql wrapper
 - ORM
 
-## requirements
+## Requirements
 - Python 3.x
 - mysql
 - mysql-connector-python
@@ -36,8 +36,8 @@ Database.connect(
 )
 ```
 
-## method
-### class method
+## Methods
+### class methods
 - query
 ```
 data = SampleModel.query()
@@ -51,7 +51,7 @@ data = SampleModel.query(where=["title='py-activerecord'", "text like '%Python%'
 # order
 data = SampleModel.query(order=["id asc", "title desc"])
 ```
-### instance method
+### instance methods
 - save
 ```
 model = SampleModel()
