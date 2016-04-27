@@ -12,7 +12,7 @@ class Database:
         pass
 
     @classmethod
-    def connect(cls, host="", database="", user="", password=""):
+    def setup(cls, host="", database="", user="", password=""):
         cls.host = host
         cls.database = database
         cls.user = user

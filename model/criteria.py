@@ -1,7 +1,7 @@
 import copy
 
-from pyactiverecord.database import Database as Database
-from pyactiverecord.column import Column as Column
+from model.database import Database as Database
+from model.column import Column as Column
 
 
 class Criteria(object):

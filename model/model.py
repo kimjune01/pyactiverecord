@@ -1,6 +1,6 @@
-from pyactiverecord.database import Database as Database
-from pyactiverecord.locator import Locator as Locator
-from pyactiverecord.column import Column as Column
+from model.database import Database as Database
+from model.locator import Locator as Locator
+from model.column import Column as Column
 
 class Model:
     id = Column(type="int")
