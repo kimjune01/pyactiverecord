@@ -41,7 +41,6 @@ model.Database.setup(
 - query
 ```
 data = SampleModel.query()
-print(len(data))
 for d in data:
     print(d.title)
 
