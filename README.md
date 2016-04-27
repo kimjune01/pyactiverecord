@@ -67,3 +67,6 @@ model.save()
 obj = SampleModel.query(where=["title='py-activerecord'"], order=["id asc"]).first()
 obj.delete()
 ```
+
+### License
+This software is released under the MIT License, see [LICENSE.md](./LICENSE.md)
