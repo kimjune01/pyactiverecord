@@ -12,6 +12,12 @@ pyactiverecord is python active-record like mysql wrapper.
 - mysql
 - mysql-connector-python
 
+## Install
+
+```
+pip install pyactiverecord
+```
+
 ## Usage
 create model class
 ```
