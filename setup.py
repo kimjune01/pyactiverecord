@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-version = '0.1.3'
+version = '0.1.4'
 
 try:
     import pypandoc
@@ -7,6 +7,8 @@ try:
 except ImportError:
     print("warning: pypandoc module not found, could not convert Markdown to RST")
     read_md = lambda f: open(f, 'r').read()
+
+requirements = lambda f: [d for d in open(f, "r").read().split("\n") if d != ""]
 
 setup(
     name='pyactiverecord',
@@ -32,6 +34,6 @@ setup(
     packages=find_packages(exclude=['examples', 'tests']),
     include_package_data=True,
     zip_safe=True,
-    long_description=read_md('README.md'),
-    install_requires=["mysql-connector-python"]
+    long_description=read_md("README.md"),
+    install_requires=requirements("requirements.txt")
 )
