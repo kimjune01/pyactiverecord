@@ -70,7 +70,6 @@ class Model:
         return criteria.delete_column(name)
 
     def save(self):
-        Model.attributes(self)
         connector = None
         try:
             connector = Database.connector()
@@ -85,7 +84,7 @@ class Model:
                     if isinstance(getattr(self, a), int):
                         sql += str(column) + ","
                     else:
-                        if column is not None:
+                        if column is not None and column.__class__ is not Column:
                             sql += "\"" + str(column) + "\","
                         else:
                             sql += "\"\","

@@ -1,7 +1,4 @@
-import enum
-
-
-class Type(enum.Enum):
+class Type:
     int = "int"
     varchar = "varchar"
     text = "text"

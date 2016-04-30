@@ -35,18 +35,15 @@ class Criteria(object):
 
                 sql = "create table `" + Criteria.table_name(self) + "` (\n"
                 sql += "    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n"
-                for k, v in self._klass.__dict__.items():
-                    if v.__class__ == Column:
-                        if v.type == Type.int:
-                            sql += "    `" + k + "` int(11) DEFAULT NULL,\n"
-                        elif v.type == Type.text:
-                            sql += "    `" + k + "` text,\n"
-                        elif v.type == Type.varchar:
-                            sql += "    `" + k + "` varchar(" + str(v.length) + ") DEFAULT NULL,\n"
-                        elif v.type == Type.timestamp:
-                            sql += "    `" + k + "` timestamp NULL DEFAULT NULL,\n"
-                        else:
-                            print("error: invalid field type `" + v.type + "`")
+                for k, v in Criteria.attributes(self._klass).items():
+                    if v.type == Type.int:
+                        sql += "    `" + k + "` int(11) DEFAULT NULL,\n"
+                    elif v.type == Type.text:
+                        sql += "    `" + k + "` text,\n"
+                    elif v.type == Type.varchar:
+                        sql += "    `" + k + "` varchar(" + str(v.length) + ") DEFAULT NULL,\n"
+                    elif v.type == Type.timestamp:
+                        sql += "    `" + k + "` timestamp NULL DEFAULT NULL,\n"
                 sql += "    PRIMARY KEY (`id`)\n"
                 sql += ") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n"
                 cursor.execute(sql)
@@ -90,21 +87,13 @@ class Criteria(object):
         finally:
             connector.close()
 
-        self._lst = self.recursive(ret, self._lst)
-        return self
-
-    def recursive(self, ret=[], lst=[]):
-        if len(ret) == 0:
-            return lst
-        else:
-            r = ret.pop()
+        for r in ret:
             c = self._klass()
-            for k, v in c.__class__.__dict__.items():
-                if v.__class__ is not Column:
-                    continue
+            for k ,v in Criteria.attributes(self._klass).items():
                 setattr(c, k, r[k])
-            lst.append(c)
-            return self.recursive(ret, lst)
+            self._lst.append(c)
+
+        return self
 
     def where(self):
         return self
@@ -125,7 +114,7 @@ class Criteria(object):
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "SHOW TABLES;"
+                sql = "show tables;"
                 cursor.execute(sql)
                 ret = [d[0] for d in cursor.fetchall()]
                 if Criteria.table_name(self) not in ret:
@@ -176,8 +165,8 @@ class Criteria(object):
                 sql = "alter table " + Criteria.table_name(self)
                 if column.type == Type.int:
                     return
-                elif column.type == Type.text:
-                    sql += " add " + name + " " + column.type + "(" + column.length + ")"
+                elif column.type == Type.varchar:
+                    sql += " add " + name + " " + column.type + "(" + str(column.length) + ")"
                 else:
                     sql += " add " + name + " " + column.type
                 cursor.execute(sql)
@@ -200,6 +189,10 @@ class Criteria(object):
         finally:
             connector.commit()
             connector.close()
+
+    @staticmethod
+    def attributes(this):
+        return dict([(k, v) for k, v in this.__dict__.items() if v.__class__ is Column])
 
     @staticmethod
     def table_name(this):
