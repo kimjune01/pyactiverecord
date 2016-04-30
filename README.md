@@ -19,7 +19,7 @@ pip install pyactiverecord
 ```
 
 ## Usage
-create model class
+create model class.
 ```
 import model
 
@@ -32,16 +32,31 @@ class SampleModel(model.Model):
     date = model.Column(type="timestamp")
     
 ```
-connect to database
+at this time, if the lower-case of this model class name of table is't exist, table is automatically created.
+
+pyactiverecord needs to connecte to the database, so program is required to call Databese.setup method.
 ```
 import model
 
-model.Database.setup(
-    host="localhost",
-    database="database_name",
-    user="root",
-    password=""
-)
+def execute():
+    s = SampleModel()
+    s.title = "test"
+    s.save()
+    
+    s = SampleModel.query().first()
+    print(s.title)
+
+
+if __name__ == '__main__':
+    
+    model.Database.setup(
+        host="localhost",
+        database="database_name",
+        user="root",
+        password=""
+    )
+    
+    execute()
 ```
 
 ## Methods
