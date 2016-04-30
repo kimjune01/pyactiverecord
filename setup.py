@@ -1,7 +1,14 @@
+import os
+import pypandoc
 from setuptools import setup, find_packages
 
 version = '0.1.6'
-requirements = lambda f: [d for d in open(f, "r").read().split("\n") if d != ""]
+
+f = open('README.txt','w+')
+readme = pypandoc.convert('README.md', 'rst')
+readme = readme.replace(", see\n`LICENSE.md <./LICENSE.md>`__", "\n\n" + open("LICENSE.md", "r").read())
+f.write(readme)
+f.close()
 
 setup(
     name='pyactiverecord',
@@ -30,3 +37,5 @@ setup(
     long_description=open("README.txt", "r").read(),
     install_requires=['mysql-connector-python']
 )
+
+os.remove('README.txt')

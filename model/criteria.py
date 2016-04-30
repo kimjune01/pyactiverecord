@@ -1,5 +1,4 @@
 import copy
-
 from model.database import Database as Database
 from model.column import Column as Column
 
@@ -139,3 +138,65 @@ class Criteria(object):
         finally:
             connector.close()
             return flag
+
+    def difference(self, attributes):
+        diff = {}
+        connector = None
+        try:
+            connector = Database.connector()
+            cursor = connector.cursor()
+            try:
+                sql = "show columns from " + self._klass.__name__.lower()
+                cursor.execute(sql)
+                ret = {d[0] for d in cursor.fetchall()}
+                for a in attributes:
+                    if a not in ret:
+                        diff[a] = "new"
+                for r in ret:
+                    if r not in attributes:
+                        diff[r] = "deleted"
+            except Exception as e:
+                print('type:' + str(type(e)))
+                print('args:' + str(e.args))
+            finally:
+                cursor.close()
+        finally:
+            connector.close()
+            if diff == {}:
+                return None
+            else:
+                return diff
+
+    def add_column(self, name, column):
+        connector = None
+        try:
+            connector = Database.connector()
+            cursor = connector.cursor()
+            try:
+                sql = "alter table " + self._klass.__name__.lower()
+                if column.type == "int":
+                    return
+                elif column.type == "varchar":
+                    sql += " add " + name + " " + column.type + "(" + column.length + ")"
+                else:
+                    sql += " add " + name + " " + column.type
+                cursor.execute(sql)
+            finally:
+                cursor.close()
+        finally:
+            connector.commit()
+            connector.close()
+
+    def delete_column(self, name):
+        connector = None
+        try:
+            connector = Database.connector()
+            cursor = connector.cursor()
+            try:
+                sql = "alter table " + self._klass.__name__.lower() + " drop column " + name
+                cursor.execute(sql)
+            finally:
+                cursor.close()
+        finally:
+            connector.commit()
+            connector.close()

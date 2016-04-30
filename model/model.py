@@ -2,16 +2,33 @@ from model.database import Database as Database
 from model.locator import Locator as Locator
 from model.column import Column as Column
 
+
 class Model:
     id = Column(type="int")
 
-    @property
-    def attributes(self):
-        return {k for k, v in self.__class__.__dict__.items() if v.__class__ == Column}
+    @staticmethod
+    def attributes(this):
+        if isinstance(this, object.__class__):
+            d = {k for k, v in this.__dict__.items() if v.__class__ == Column}
+        else:
+            d = {k for k, v in this.__class__.__dict__.items() if v.__class__ == Column}
+        if "id" not in d:
+            d.add("id")
+        return d
 
     def __new__(cls, *args, **kwargs):
         if not cls.is_exist_table():
             cls.create()
+        else:
+            attributes = Model.attributes(cls)
+            diff = cls.difference(attributes)
+            if diff is not None:
+                for k, v in diff.items():
+                    if v == "new":
+                        column = getattr(cls, k)
+                        cls.add_column(k, column)
+                    elif v == "deleted":
+                        cls.delete_column(k)
         return super().__new__(cls)
 
     def __init__(self):
@@ -46,17 +63,33 @@ class Model:
         criteria = Locator.query(cls)
         return criteria.is_exist_table()
 
+    @classmethod
+    def difference(cls, attributes):
+        criteria = Locator.query(cls)
+        return criteria.difference(attributes)
+
+    @classmethod
+    def add_column(cls, name, column):
+        criteria = Locator.query(cls)
+        return criteria.add_column(name, column)
+
+    @classmethod
+    def delete_column(cls, name):
+        criteria = Locator.query(cls)
+        return criteria.delete_column(name)
+
     def save(self):
+        Model.attributes(self)
         connector = None
         try:
             connector = Database.connector()
             cursor = connector.cursor()
             try:
                 sql = "insert into " + self.__class__.__name__.lower() + " ("
-                for a in self.attributes:
+                for a in Model.attributes(self):
                     sql += a + ","
                 sql = sql[0:-1] + ") values("
-                for a in self.attributes:
+                for a in Model.attributes(self):
                     column = getattr(self, a)
                     if isinstance(getattr(self, a), int):
                         sql += str(column) + ","

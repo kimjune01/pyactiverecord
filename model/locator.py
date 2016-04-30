@@ -11,4 +11,14 @@ class Locator:
             criteria = cls.criterias[klass.__name__]
             if not criteria.is_exist_table():
                 criteria.create()
+            else:
+                attributes = klass.attributes(klass)
+                diff = klass.difference(attributes)
+                if diff is not None:
+                    for k, v in diff.items():
+                        if v == "new":
+                            column = getattr(klass, k)
+                            klass.add_column(k, column)
+                        elif v == "deleted":
+                            klass.delete_column(k)
         return cls.criterias[klass.__name__]
