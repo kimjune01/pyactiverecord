@@ -2,7 +2,7 @@ import os
 import pypandoc
 from setuptools import setup, find_packages
 
-version = '0.1.6'
+version = '0.2.0'
 
 f = open('README.txt','w+')
 readme = pypandoc.convert('README.md', 'rst')
