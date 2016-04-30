@@ -26,10 +26,10 @@ import model
 
 class SampleModel(model.Model):
 
-    number = model.Column(type="int")
-    title = model.Column(type="varchar")
-    text = model.Column(type="text")
-    date = model.Column(type="timestamp")
+    number = model.Column(type=model.Type.int)
+    title = model.Column(type=modle.Type.varchar)
+    text = model.Column(type=model.Type.text)
+    date = model.Column(type=model.Type.timestamp)
     
 ```
 at this time, if the lower-case of this model class name of table is't exist, table is automatically created.
@@ -41,10 +41,11 @@ import model
 def execute():
     s = SampleModel()
     s.title = "test"
+    s.text = "test to save sample model"
     s.save()
     
     s = SampleModel.query().first()
-    print(s.title)
+    print(s.title, s.text)
 
 
 if __name__ == '__main__':
