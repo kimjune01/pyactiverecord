@@ -32,16 +32,32 @@ class SampleModel(model.Model):
     date = model.Column(type="timestamp")
     
 ```
-connect to database
+at this time, if the lower-case of this model class name of the tabale is't exist, it is automatically created.
+
+
+pyactiverecord needs to connecte to the database, so first of all, program is required to call Databese.setup method.
 ```
 import model
 
-model.Database.setup(
-    host="localhost",
-    database="database_name",
-    user="root",
-    password=""
-)
+def execute():
+    s = SampleModel()
+    s.title = "test"
+    s.save()
+    
+    s = SampleModel.query().first()
+    print(s.title)
+
+
+if __name__ == '__main__':
+    
+    model.Database.setup(
+        host="localhost",
+        database="stardust",
+        user="root",
+        password=""
+    )
+    
+    execute()
 ```
 
 ## Methods
