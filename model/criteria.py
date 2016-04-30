@@ -1,6 +1,6 @@
-import copy
 from model.database import Database as Database
 from model.column import Column as Column
+from model.type import Type as Type
 
 
 class Criteria(object):
@@ -30,20 +30,20 @@ class Criteria(object):
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "DROP TABLE IF EXISTS `" + self._klass.__name__.lower() + "`;\n"
+                sql = "DROP TABLE IF EXISTS `" + Criteria.table_name(self) + "`;\n"
                 cursor.execute(sql)
 
-                sql = "create table `" + self._klass.__name__.lower() + "` (\n"
+                sql = "create table `" + Criteria.table_name(self) + "` (\n"
                 sql += "    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n"
                 for k, v in self._klass.__dict__.items():
                     if v.__class__ == Column:
-                        if v.type == "int":
+                        if v.type == Type.int:
                             sql += "    `" + k + "` int(11) DEFAULT NULL,\n"
-                        elif v.type == "text":
+                        elif v.type == Type.text:
                             sql += "    `" + k + "` text,\n"
-                        elif v.type == "varchar":
+                        elif v.type == Type.varchar:
                             sql += "    `" + k + "` varchar(" + str(v.length) + ") DEFAULT NULL,\n"
-                        elif v.type == "timestamp":
+                        elif v.type == Type.timestamp:
                             sql += "    `" + k + "` timestamp NULL DEFAULT NULL,\n"
                         else:
                             print("error: invalid field type `" + v.type + "`")
@@ -51,7 +51,7 @@ class Criteria(object):
                 sql += ") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n"
                 cursor.execute(sql)
 
-                sql = "LOCK TABLES `" + self._klass.__name__.lower() + "` WRITE;"
+                sql = "LOCK TABLES `" + Criteria.table_name(self) + "` WRITE;"
                 cursor.execute(sql)
             finally:
                 cursor.close()
@@ -67,7 +67,7 @@ class Criteria(object):
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "select * from " + self._klass.__name__.lower()
+                sql = "select * from " + Criteria.table_name(self)
                 if len(where) > 0:
                     sql += " where"
                     for i, v in enumerate(where):
@@ -128,7 +128,7 @@ class Criteria(object):
                 sql = "SHOW TABLES;"
                 cursor.execute(sql)
                 ret = [d[0] for d in cursor.fetchall()]
-                if not self._klass.__name__.lower() in ret:
+                if Criteria.table_name(self) not in ret:
                     flag = False
             except Exception as e:
                 print('type:' + str(type(e)))
@@ -146,7 +146,7 @@ class Criteria(object):
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "show columns from " + self._klass.__name__.lower()
+                sql = "show columns from " + Criteria.table_name(self)
                 cursor.execute(sql)
                 ret = {d[0] for d in cursor.fetchall()}
                 for a in attributes:
@@ -173,10 +173,10 @@ class Criteria(object):
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "alter table " + self._klass.__name__.lower()
-                if column.type == "int":
+                sql = "alter table " + Criteria.table_name(self)
+                if column.type == Type.int:
                     return
-                elif column.type == "varchar":
+                elif column.type == Type.text:
                     sql += " add " + name + " " + column.type + "(" + column.length + ")"
                 else:
                     sql += " add " + name + " " + column.type
@@ -193,10 +193,14 @@ class Criteria(object):
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "alter table " + self._klass.__name__.lower() + " drop column " + name
+                sql = "alter table " + Criteria.table_name(self) + " drop column " + name
                 cursor.execute(sql)
             finally:
                 cursor.close()
         finally:
             connector.commit()
             connector.close()
+
+    @staticmethod
+    def table_name(this):
+        return this._klass.__name__.lower()

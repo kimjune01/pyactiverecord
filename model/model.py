@@ -1,20 +1,11 @@
 from model.database import Database as Database
 from model.locator import Locator as Locator
 from model.column import Column as Column
+from model.type import Type as Type
 
 
 class Model:
-    id = Column(type="int")
-
-    @staticmethod
-    def attributes(this):
-        if isinstance(this, object.__class__):
-            d = {k for k, v in this.__dict__.items() if v.__class__ == Column}
-        else:
-            d = {k for k, v in this.__class__.__dict__.items() if v.__class__ == Column}
-        if "id" not in d:
-            d.add("id")
-        return d
+    id = Column(type=Type.int)
 
     def __new__(cls, *args, **kwargs):
         if not cls.is_exist_table():
@@ -85,7 +76,7 @@ class Model:
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "insert into " + self.__class__.__name__.lower() + " ("
+                sql = "insert into " + Model.table_name(self) + " ("
                 for a in Model.attributes(self):
                     sql += a + ","
                 sql = sql[0:-1] + ") values("
@@ -116,7 +107,7 @@ class Model:
             connector = Database.connector()
             cursor = connector.cursor()
             try:
-                sql = "delete from " + self.__class__.__name__.lower() + " where id = " + str(getattr(self, "id")) + ";"
+                sql = "delete from " + Model.table_name(self) + " where id = " + str(getattr(self, "id")) + ";"
 
                 cursor.execute(sql)
                 connector.commit()
@@ -128,3 +119,17 @@ class Model:
                 cursor.close()
         finally:
             connector.close()
+
+    @staticmethod
+    def attributes(this):
+        if isinstance(this, object.__class__):
+            d = {k for k, v in this.__dict__.items() if v.__class__ == Column}
+        else:
+            d = {k for k, v in this.__class__.__dict__.items() if v.__class__ == Column}
+        if "id" not in d:
+            d.add("id")
+        return d
+
+    @staticmethod
+    def table_name(this):
+        return this.__class__.__name__.lower()

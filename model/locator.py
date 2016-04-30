@@ -6,7 +6,7 @@ class Locator:
 
     @classmethod
     def query(cls, klass):
-        if not klass.__name__ in cls.criterias:
+        if klass.__name__ not in cls.criterias:
             cls.criterias.update({klass.__name__: Criteria(klass)})
             criteria = cls.criterias[klass.__name__]
             if not criteria.is_exist_table():

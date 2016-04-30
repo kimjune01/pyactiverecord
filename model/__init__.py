@@ -1,3 +1,4 @@
-from .model import Model
-from .database import Database
-from .column import Column
+from .model import Model as Model
+from .database import Database as Database
+from .column import Column as Column
+from .type import Type as Type
