@@ -34,7 +34,7 @@ class SampleModel(model.Model):
 ```
 at this time, if the lower-case of this model class name of table is't exist, table is automatically created.
 
-pyactiverecord needs to connecte to the database, so program is required to call Databese.setup method.
+pyactiverecord needs to connecte to the database, program is required to call Databese.setup() method.
 ```
 import model
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
 ## Methods
 ### class methods
-query
+query: fetch data from the table
 ```
 data = SampleModel.query()
 for d in data:
@@ -75,7 +75,7 @@ data = SampleModel.query(where=["title='py-activerecord'", "text like '%Python%'
 data = SampleModel.query(order=["id asc", "title desc"])
 ```
 ### instance methods
-save
+save: save model object to the table
 ```
 s = SampleModel()
 s.number = 1
@@ -85,7 +85,7 @@ s.date = "2016-01-01 00:00:00"
 
 s.save()
 ```
-delete
+delete: delete model object from the table
 ```
 s = SampleModel.query(where=["title='py-activerecord'"], order=["id asc"]).first()
 s.delete()
