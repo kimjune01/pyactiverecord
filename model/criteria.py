@@ -163,7 +163,7 @@ class Criteria(object):
             cursor = connector.cursor()
             try:
                 sql = "alter table " + Criteria.table_name(self)
-                if column.type == Type.int:
+                if name == "id":
                     return
                 elif column.type == Type.varchar:
                     sql += " add " + name + " " + column.type + "(" + str(column.length) + ")"
