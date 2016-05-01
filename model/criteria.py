@@ -56,7 +56,7 @@ class Criteria(object):
             connector.commit()
             connector.close()
 
-    def query(self, where, order):
+    def query(self, where=[], order=[], limit=None):
         self.initialize()
         connector = None
         ret = None
@@ -76,6 +76,9 @@ class Criteria(object):
                     sql += " order by"
                     for v in order:
                         sql += " " + v
+
+                if limit is not None:
+                    sql += " limit 0," + str(limit)
 
                 sql += ";"
                 cursor.execute(sql)

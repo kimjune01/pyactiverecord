@@ -26,9 +26,9 @@ class Model:
         pass
 
     @classmethod
-    def query(cls, where=[], order=[]):
+    def query(cls, where=[], order=[], limit=None):
         criteria = Locator.query(cls)
-        return criteria.query(where, order)
+        return criteria.query(where, order, limit)
 
     @classmethod
     def all(cls):
