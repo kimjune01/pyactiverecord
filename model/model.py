@@ -1,3 +1,5 @@
+import re
+
 from model.database import Database as Database
 from model.locator import Locator as Locator
 from model.column import Column as Column
@@ -132,4 +134,4 @@ class Model:
 
     @staticmethod
     def table_name(this):
-        return this.__class__.__name__.lower()
+        return re.sub("([A-Z])", lambda x: "_" + x.group(1).lower(), this.__class__.__name__)[1:]

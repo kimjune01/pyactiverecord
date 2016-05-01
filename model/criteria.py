@@ -1,3 +1,4 @@
+import re
 from model.database import Database as Database
 from model.column import Column as Column
 from model.type import Type as Type
@@ -36,6 +37,8 @@ class Criteria(object):
                 sql = "create table `" + Criteria.table_name(self) + "` (\n"
                 sql += "    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n"
                 for k, v in Criteria.attributes(self._klass).items():
+                    if k == "id":
+                        continue
                     if v.type == Type.int:
                         sql += "    `" + k + "` int(11) DEFAULT NULL,\n"
                     elif v.type == Type.text:
@@ -199,4 +202,4 @@ class Criteria(object):
 
     @staticmethod
     def table_name(this):
-        return this._klass.__name__.lower()
+        return re.sub("([A-Z])", lambda x: "_" + x.group(1).lower(), this._klass.__name__)[1:]
