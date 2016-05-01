@@ -1,20 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '0.2.2'
-f = open('README.txt','w+')
-
-readme = ""
-try:  
-      import pypandoc
-      readme = pypandoc.convert('README.md', 'rst')
-      readme = readme.replace(", see\n`LICENSE.md <./LICENSE.md>`__", "\n\n" + open("LICENSE.md", "r").read())
-except ImportError:  
-      print("warning: pypandoc module not found, could not convert Markdown to RST")
-      readme = open('README.md', 'r').read()
-
-f.write(readme)
-f.close()
+version = '0.2.3'
 
 setup(
     name='pyactiverecord',
@@ -43,5 +30,3 @@ setup(
     long_description=open("README.txt", "r").read(),
     install_requires=['mysql-connector-python']
 )
-
-os.remove('README.txt')
