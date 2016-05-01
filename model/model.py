@@ -123,9 +123,9 @@ class Model:
     def attributes(this):
         d = {}
         if isinstance(this, object.__class__):
-            d = dict([k for k, v in this.__dict__.items() if v.__class__ == Column])
+            d = dict([(k, v) for k, v in this.__dict__.items() if v.__class__ == Column])
         else:
-            d = {k for k, v in this.__class__.__dict__.items() if v.__class__ == Column}
+            d = dict([(k, v) for k, v in this.__class__.__dict__.items() if v.__class__ == Column])
         if "id" not in d.keys():
             d["id"] = Column(type=Type.int)
         return d
