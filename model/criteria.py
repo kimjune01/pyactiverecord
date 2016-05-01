@@ -89,7 +89,7 @@ class Criteria(object):
 
         for r in ret:
             c = self._klass()
-            for k ,v in Criteria.attributes(self._klass).items():
+            for k, v in Criteria.attributes(self._klass).items():
                 setattr(c, k, r[k])
             self._lst.append(c)
 
@@ -192,7 +192,10 @@ class Criteria(object):
 
     @staticmethod
     def attributes(this):
-        return dict([(k, v) for k, v in this.__dict__.items() if v.__class__ is Column])
+        d = dict([(k, v) for k, v in this.__dict__.items() if v.__class__ is Column])
+        if "id" not in d.keys():
+            d["id"] = Column(type=Type.int)
+        return d
 
     @staticmethod
     def table_name(this):
