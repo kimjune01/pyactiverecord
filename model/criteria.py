@@ -151,10 +151,7 @@ class Criteria(object):
                 cursor.close()
         finally:
             connector.close()
-            if diff == {}:
-                return None
-            else:
-                return diff
+            return diff
 
     def add_column(self, name, column):
         connector = None
