@@ -78,16 +78,20 @@ class Model:
             cursor = connector.cursor()
             try:
                 sql = "insert into " + Model.table_name(self) + " ("
-                for a in Model.attributes(self):
-                    sql += a + ","
+                for k, v in Model.attributes(self).items():
+                    if k == "id" and v.__class__ is Column:
+                        continue
+                    sql += k + ","
                 sql = sql[0:-1] + ") values("
-                for a in Model.attributes(self):
-                    column = getattr(self, a)
-                    if isinstance(getattr(self, a), int):
-                        sql += str(column) + ","
+                for k, v in Model.attributes(self).items():
+                    if k == "id" and v.__class__ is Column:
+                        continue
+                    value = getattr(self, k)
+                    if isinstance(getattr(self, k), int):
+                        sql += str(value) + ","
                     else:
-                        if column is not None and column.__class__ is not Column:
-                            sql += "\"" + str(column) + "\","
+                        if value is not None and value.__class__ is not Column:
+                            sql += "\"" + str(value) + "\","
                         else:
                             sql += "\"\","
                 sql = sql[0:-1] + ")"
