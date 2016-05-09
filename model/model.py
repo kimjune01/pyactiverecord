@@ -93,7 +93,7 @@ class Model:
                         if value is not None and value.__class__ is not Column:
                             sql += "\"" + str(value) + "\","
                         else:
-                            sql += "\"\","
+                            sql += "null,"
                 sql = sql[0:-1] + ")"
                 cursor.execute(sql)
                 connector.commit()
