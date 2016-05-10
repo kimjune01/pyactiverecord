@@ -39,14 +39,28 @@ class Criteria(object):
                 for k, v in Criteria.attributes(self._klass).items():
                     if k == "id":
                         continue
-                    if v.type == Type.int:
+                    if v.type == Type.tinyint:
+                        sql += "    `" + k + "` tinyint(4) DEFAULT NULL,\n"
+                    elif v.type == Type.int:
                         sql += "    `" + k + "` int(11) DEFAULT NULL,\n"
+                    elif v.type == Type.bigint:
+                        sql += "    `" + k + "` bigint(20) DEFAULT NULL,\n"
+                    elif v.type == Type.float:
+                        sql += "    `" + k + "` float DEFAULT NULL,\n"
+                    elif v.type == Type.double:
+                        sql += "    `" + k + "` double DEFAULT NULL,\n"
                     elif v.type == Type.text:
                         sql += "    `" + k + "` text,\n"
                     elif v.type == Type.varchar:
                         sql += "    `" + k + "` varchar(" + str(v.length) + ") DEFAULT NULL,\n"
+                    elif v.type == Type.date:
+                        sql += "    `" + k + "` date NULL DEFAULT NULL,\n"
+                    elif v.type == Type.datetime:
+                        sql += "    `" + k + "` datetime NULL DEFAULT NULL,\n"
                     elif v.type == Type.timestamp:
                         sql += "    `" + k + "` timestamp NULL DEFAULT NULL,\n"
+                    elif v.type == Type.time:
+                        sql += "    `" + k + "` time NULL DEFAULT NULL,\n"
                 sql += "    PRIMARY KEY (`id`)\n"
                 sql += ") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n"
                 cursor.execute(sql)
