@@ -79,14 +79,15 @@ class Model:
             try:
                 sql = "insert into " + Model.table_name(self) + " ("
                 for k, v in Model.attributes(self).items():
-                    if k == "id" and v.__class__ is Column:
+                    value = getattr(self, k)
+                    if k == "id" and value is Column:
                         continue
                     sql += k + ","
                 sql = sql[0:-1] + ") values("
                 for k, v in Model.attributes(self).items():
-                    if k == "id" and v.__class__ is Column:
-                        continue
                     value = getattr(self, k)
+                    if k == "id" and value is Column:
+                        continue
                     if isinstance(getattr(self, k), int):
                         sql += str(value) + ","
                     else:
