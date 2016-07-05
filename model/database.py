@@ -7,16 +7,18 @@ class Database:
     database = None
     user = None
     password = None
+    port = None
 
     def __init__(self):
         pass
 
     @classmethod
-    def setup(cls, host="", database="", user="", password=""):
+    def setup(cls, host=None, database=None, user=None, password=None, port=None):
         cls.host = host
         cls.database = database
         cls.user = user
         cls.password = password
+        cls.port = port
 
     @classmethod
     def connector(cls):
@@ -38,5 +40,6 @@ class Database:
                 host=cls.host,
                 database=cls.database,
                 user=cls.user,
-                password=cls.password
+                password=cls.password,
+                port=cls.port
             )
