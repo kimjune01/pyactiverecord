@@ -35,6 +35,13 @@ class Database:
         if error != "":
             print(error)
             sys.exit(1)
+        elif cls.port is None:
+            return mysql.connector.connect(
+                host=cls.host,
+                database=cls.database,
+                user=cls.user,
+                password=cls.password
+            )
         else:
             return mysql.connector.connect(
                 host=cls.host,
