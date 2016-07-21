@@ -22,6 +22,4 @@ class Locator:
             if v == "new":
                 column = getattr(klass, k)
                 klass.add_column(k, column)
-            elif v == "deleted":
-                klass.delete_column(k)
         return cls.criterias[klass.__name__]

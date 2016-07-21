@@ -20,8 +20,6 @@ class Model:
                     if v == "new":
                         column = getattr(cls, k)
                         cls.add_column(k, column)
-                    elif v == "deleted":
-                        cls.delete_column(k)
         return super().__new__(cls)
 
     def __init__(self):
@@ -65,11 +63,6 @@ class Model:
     def add_column(cls, name, column):
         criteria = Locator.query(cls)
         return criteria.add_column(name, column)
-
-    @classmethod
-    def delete_column(cls, name):
-        criteria = Locator.query(cls)
-        return criteria.delete_column(name)
 
     def save(self):
         connector = None

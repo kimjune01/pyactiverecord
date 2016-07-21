@@ -161,9 +161,6 @@ class Criteria(object):
                 for a in attributes:
                     if a not in ret:
                         diff[a] = "new"
-                for r in ret:
-                    if r not in attributes:
-                        diff[r] = "deleted"
             except Exception as e:
                 print('type:' + str(type(e)))
                 print('args:' + str(e.args))
@@ -186,20 +183,6 @@ class Criteria(object):
                     sql += " add " + name + " " + column.type + "(" + str(column.length) + ")"
                 else:
                     sql += " add " + name + " " + column.type
-                cursor.execute(sql)
-            finally:
-                cursor.close()
-        finally:
-            connector.commit()
-            connector.close()
-
-    def delete_column(self, name):
-        connector = None
-        try:
-            connector = Database.connector()
-            cursor = connector.cursor()
-            try:
-                sql = "alter table " + Criteria.table_name(self) + " drop column " + name
                 cursor.execute(sql)
             finally:
                 cursor.close()
